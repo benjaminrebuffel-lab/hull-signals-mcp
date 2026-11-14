@@ -1,17 +1,15 @@
-const app = express();
-app.use(express.json());
-
-app.post("/mcp", async (req, res) => {
-  const auth = req.query.key || (req.headers.authorization || "").replace("Bearer ", "");
-  if (TOKEN && auth !== TOKEN) return res.status(401).json({ error: "unauthorized" });
-  const server = buildServer();
-  const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
-  res.on("close", () => { transport.close(); server.close(); });
-  await server.connect(transport);
-  await transport.handleRequest(req, res, req.body);
-});
-
-app.get("/mcp", (req, res) => res.status(405).set("Allow", "POST").end());
-app.delete("/mcp", (req, res) => res.status(405).set("Allow", "POST").end());
-app.get("/", (_, res) => res.send("ok"));
-app.listen(process.env.PORT || 3000, () => console.log("hull-signals up"));
+{
+  "name": "hull-signals-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "express": "^4.19.2",
+    "zod": "^3.23.8"
+  }
+}
+Ouvre server.js 
